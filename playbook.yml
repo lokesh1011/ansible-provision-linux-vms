@@ -27,9 +27,10 @@
   # Call the custom webserver role, passing the required variables.
   roles:
     - role: webserver
-      app_root: html_demo_site-main
-      server_name: "{{ ansible_default_ipv4.address }}"
-      document_root: /var/www/html
+      vars:
+        app_root: html_demo_site-main
+        server_name: "{{ ansible_default_ipv4.address }}"
+        document_root: /var/www/html
 
   tasks:
     - name: Verify the companyplus document root exists
