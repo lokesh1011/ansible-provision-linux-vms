@@ -1,0 +1,22 @@
+---
+- name: Install the {{ webserver }} package
+  ansible.builtin.package:
+    name: "{{ webserver }}"
+    state: present
+
+- name: Create the website document root directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: nginx
+    group: nginx
+    mode: "0770"
+  loop:
+    - /var/www/html/www.companyplus.com
+    - /var/www/html/www.companypulsar.com
+
+- name: Template the nginx configuration file
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  notify: Restart nginx

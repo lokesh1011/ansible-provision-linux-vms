@@ -1,0 +1,3 @@
+---
+# Role variable used by the package module to install the web server.
+webserver: nginx

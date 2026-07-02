@@ -1,0 +1,6 @@
+---
+# Group variable for the [aws] host group.
+# The firewalld task in the playbook loops over this list to open each port.
+ports:
+  - 80
+  - 443

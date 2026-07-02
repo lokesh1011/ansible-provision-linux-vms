@@ -1,0 +1,2 @@
+# Force LF so YAML/templates stay Unix-clean on the Linux EC2 hosts.
+* text=auto eol=lf

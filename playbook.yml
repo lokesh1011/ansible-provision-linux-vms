@@ -1,0 +1,50 @@
+---
+- name: Provision AWS Linux web servers with Ansible
+  hosts: aws
+  become: true
+
+  # firewalld setup runs before the role.
+  pre_tasks:
+    - name: Ensure firewalld is installed
+      ansible.builtin.package:
+        name: firewalld
+        state: present
+
+    - name: Ensure firewalld is started and enabled
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Open the required ports in firewalld (permanent + immediate)
+      ansible.posix.firewalld:
+        port: "{{ item }}/tcp"
+        permanent: true
+        immediate: true
+        state: enabled
+      loop: "{{ ports }}"
+
+  # Call the custom webserver role, passing the required variables.
+  roles:
+    - role: webserver
+      app_root: html_demo_site-main
+      server_name: "{{ ansible_default_ipv4.address }}"
+      document_root: /var/www/html
+
+  tasks:
+    - name: Verify the companyplus document root exists
+      block:
+        - name: Check for /var/www/html/www.companyplus.com
+          ansible.builtin.stat:
+            path: /var/www/html/www.companyplus.com
+          register: companyplus_dir
+
+        - name: Display an error when the directory is missing
+          ansible.builtin.debug:
+            msg: "ERROR: /var/www/html/www.companyplus.com does not exist!"
+          when: not companyplus_dir.stat.exists
+
+        - name: Confirm the directory exists
+          ansible.builtin.debug:
+            msg: "/var/www/html/www.companyplus.com exists."
+          when: companyplus_dir.stat.exists
