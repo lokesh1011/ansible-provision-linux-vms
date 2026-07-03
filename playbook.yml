@@ -1,6 +1,6 @@
 ---
 - name: Provision AWS Linux web servers with Ansible
-  hosts: aws
+  hosts: all
   become: true
 
   # firewalld setup runs before the role.

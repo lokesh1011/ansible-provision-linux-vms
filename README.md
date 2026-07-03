@@ -4,7 +4,7 @@ Ansible playbook that provisions 3 AWS Linux (EC2) web servers from an
 `ansible-master` node.
 
 ## What the playbook does
-- Runs against the **`aws`** host group (the 3 EC2 workers).
+- Runs against **`hosts: all`** (every host in the inventory — the 3 EC2 workers).
 - Installs & starts **firewalld**, then opens the ports in the `ports` group
   variable (**80, 443**) with a **loop**, permanent + immediate.
 - In a **block**, `stat`s `/var/www/html/www.companyplus.com` and uses `debug`
@@ -26,7 +26,7 @@ Ansible playbook that provisions 3 AWS Linux (EC2) web servers from an
 .
 ├── ansible.cfg
 ├── inventory.ini            # fill the [aws] group with your 3 worker DNS names
-├── group_vars/aws.yml       # ports: [80, 443]
+├── group_vars/all.yml       # ports: [80, 443]
 ├── playbook.yml
 └── roles/webserver/
     ├── tasks/main.yml

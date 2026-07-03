@@ -1,5 +1,5 @@
 ---
-# Group variable for the [aws] host group.
+# Applies to every host in the inventory (the play targets `hosts: all`).
 # The firewalld task in the playbook loops over this list to open each port.
 ports:
   - 80
